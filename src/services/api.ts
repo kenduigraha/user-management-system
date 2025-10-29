@@ -39,7 +39,22 @@ export const userApi = {
       ...userData,
     }
     saveCustomUsers([...customUsers, newUser])
-    return newUser
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      })
+      const apiCreateUser = await response.json()
+      console.log("apiCreateUser: ", apiCreateUser)
+      return newUser
+    } catch (error) {
+      console.error("Error add new users", error)
+      return newUser
+    }
   },
 
   // Update a user
@@ -51,7 +66,22 @@ export const userApi = {
       saveCustomUsers(customUsers)
       return customUsers[index]
     }
-    throw new Error("User not found")
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customUsers),
+      })
+      const apiUpdateUser = await response.json()
+      console.log("apiUpdateUser: ", apiUpdateUser)
+      return apiUpdateUser
+    } catch (error) {
+      console.error("Error update user", error)
+      throw new Error("Update user error")
+    }
   },
 
   // Delete a user
@@ -59,5 +89,20 @@ export const userApi = {
     const customUsers = getCustomUsers()
     const filtered = customUsers.filter((u) => u.id !== id)
     saveCustomUsers(filtered)
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customUsers),
+      })
+      const apiDeleteUser = await response.json()
+      console.log("apiDeleteUser: ", apiDeleteUser)
+      return apiDeleteUser
+    } catch (error) {
+      console.error("Error delete user", error)
+      throw new Error("Delete user error")
+    }
   },
 }
