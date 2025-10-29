@@ -23,6 +23,8 @@ export const userApi = {
       const response = await fetch(`${API_BASE_URL}/users`)
       const apiUsers = await response.json()
       const customUsers = getCustomUsers()
+      // add fetched API users to localStorage
+      saveCustomUsers([...apiUsers])
       // concat API users from jsonplaceholder with custom users from localStorage
       return [...customUsers, ...apiUsers]
     } catch (error) {
