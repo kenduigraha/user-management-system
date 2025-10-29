@@ -8,7 +8,7 @@ import { ConfirmDialog } from "./confirm-dialog"
 
 interface UserCardProps {
   user: User
-  onEdit: (user: User) => void;
+  onEdit?: (user: User) => void;
 }
 
 export function UserCard({ user }: UserCardProps) {
